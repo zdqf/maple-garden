@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zdqf.github.io/maple-garden/sitemap.xml
