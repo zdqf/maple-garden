@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import ArticlePage from '../pages/ArticlePage';
+import CollectionPage from '../pages/CollectionPage';
 import AboutPage from '../pages/AboutPage';
 import HomePage from '../pages/HomePage';
 import JournalPage from '../pages/JournalPage';
@@ -23,6 +24,10 @@ export function AppRoutes(): React.JSX.Element {
         <Route
           path={routePaths.journalCategory}
           element={<JournalPage />}
+        />
+        <Route
+          path={routePaths.journalCollection}
+          element={<CollectionPage />}
         />
         <Route path={routePaths.article} element={<ArticlePage />} />
         <Route path={routePaths.tools} element={<ToolPortalPage />} />

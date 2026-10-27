@@ -4,8 +4,8 @@ description: "用短文章记录决策、实验和下一步，让数字花园保
 slug: "a-small-writing-loop"
 publishedAt: "2025-03-02T08:15:00+08:00"
 category: "developer"
-author: "Logan.Song"
-copyright: "© 2025 Logan.Song. All rights reserved."
+author: "木有风"
+copyright: "© 2025 Logan.Song / 木有风. All rights reserved."
 tags:
   - "writing"
   - "digital garden"

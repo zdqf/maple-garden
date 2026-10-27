@@ -6,19 +6,28 @@ import { PersonalConfigSchema } from './schemas';
  */
 export const personalConfig = PersonalConfigSchema.parse({
   identity: {
-    name: 'Logan.Song',
-    headline: 'TODO_REPLACE',
+    name: '木有风',
+    headline: '一枚枫叶也是一座花园',
   },
-  biography: ['TODO_REPLACE'],
-  skills: ['TODO_REPLACE'],
+  biography: [
+    '木有风，2003 年生于湖北赤壁。',
+    '曾获武汉大学樱花诗歌奖、第五届浙江大学“求是杯”诗歌创作奖、野草文学奖等。',
+  ],
+  skills: ['钢笔', '写字', '写诗', '篮球'],
   experience: [],
-  principles: ['TODO_REPLACE'],
-  contacts: [],
+  principles: [],
+  contacts: [
+    {
+      label: '邮箱',
+      href: 'mailto:fengye78236402@gmail.com',
+      accessibleLabel: '发送邮件至 fengye78236402@gmail.com',
+    },
+  ],
   socials: [],
   site: {
     title: 'Maple-Garden',
     description:
-      'Maple-Garden：一个记录开发、诗歌、交易、书法与篮球的浏览器本地数字花园。',
+      'Maple-Garden：一个记录开发、诗歌散文、交易心得、写点什么与篮球的浏览器本地数字花园。',
     language: 'zh-CN',
     previewImagePath: 'images/social-preview.png',
   },

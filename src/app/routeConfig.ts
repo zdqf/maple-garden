@@ -6,6 +6,7 @@ export const routePaths = Object.freeze({
   journal: '/journal',
   journalTag: '/journal/tag/:tag',
   journalCategory: '/journal/category/:category',
+  journalCollection: '/journal/collection/:collection',
   article: '/journal/post/:slug',
   tools: '/tools',
   localTool: '/tools/:toolId',

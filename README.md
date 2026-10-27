@@ -1,6 +1,6 @@
 # Maple-Garden
 
-Maple-Garden（枫叶花园）是一个静态、浏览器本地优先的个人数字花园。它把开发、诗歌、交易、书法和篮球等长期记录收纳在不同内容板块中，同时提供一组不上传用户输入的开发者工具。
+Maple-Garden（枫叶花园）是一个静态、浏览器本地优先的个人数字花园。它把开发、诗歌散文、交易心得、写点什么和篮球等长期记录收纳在不同内容板块中，同时提供一组不上传用户输入的开发者工具。
 
 最终站点：<https://zdqf.github.io/maple-garden/>
 
@@ -28,23 +28,25 @@ npm run build
 
 板块配置位于 `src/config/articleCategories.ts`，当前包括：
 
-- `poetry`：诗歌
+- `poetry`：诗歌散文
 - `developer`：开发者
-- `trader`：交易员
-- `calligraphy`：书法
+- `trader`：交易心得
+- `calligraphy`：写点什么
 - `basketball`：篮球
 
 日志页会自动显示板块卡片、文章数量和分类筛选。新增板块时修改配置文件即可，不需要修改 Journal 页面布局。
 
 ## 个人配置
 
-个人信息的唯一来源是 `src/config/personal.ts`：身份、简介、技能、经历、工作原则、联系方式、站点标题/描述和 SEO 文案都集中在这里。当前仓库保留 `TODO_REPLACE`，页面会用“待替换”标识显示它们；发布真实个人站点前请替换成自己的内容。
+个人信息的唯一来源是 `src/config/personal.ts`：公开笔名、简介、技能、联系方式、站点标题/描述和 SEO 文案都集中在这里。当前公开署名为 `木有风`，版权标识使用 `Logan.Song / 木有风`；未提供的可选资料保持为空，不编造个人事实。
 
 项目目录位于 `src/config/projects.ts`，工具元数据位于 `src/config/tools.ts`。
 
 ## 添加文章
 
-把 `.md` 文件放进 `content/posts/`。Frontmatter 示例：
+文章按分类放在 `content/posts/` 下，诗集或系列内容再使用独立子目录。例如 `content/posts/poetry/shen-zai-han/` 存放《身在汉》的诗作，`content/posts/trader/` 存放交易记录。构建会递归读取这些目录中的 Markdown 文件。
+
+Frontmatter 示例：
 
 ```yaml
 ---
@@ -53,8 +55,8 @@ description: "列表和 SEO 摘要"
 slug: "url-friendly-slug"
 publishedAt: "2025-03-02T08:15:00+08:00"
 category: "developer"
-author: "Logan.Song"
-copyright: "© 2025 Logan.Song. All rights reserved."
+author: "木有风"
+copyright: "© 2025 Logan.Song / 木有风. All rights reserved."
 tags:
   - "example"
 draft: false
@@ -71,15 +73,19 @@ draft: false
 
 ## 版权和署名
 
-项目版权声明位于 [`COPYRIGHT.md`](./COPYRIGHT.md)。发布前请：
+项目版权声明和内容使用规则位于 [`COPYRIGHT.md`](./COPYRIGHT.md)。当前公开署名为 `木有风`，版权标识使用 `Logan.Song / 木有风`；不需要在网站公开真实姓名。授权申请和侵权联系邮箱为 `fengye78236402@gmail.com`。
 
-1. 将个人署名和文章 `author` 中的 `TODO_REPLACE` 替换为真实姓名或公开笔名。
-2. 为每篇原创文章填写 `copyright` 字段。
-3. 对引用、图片、字体和代码片段保留原作者、来源和许可证。
-4. 不把未获授权的诗歌、图片、文章或交易资料复制进仓库。
-5. 保留 Git 提交历史，并使用 GitHub Release 或带日期的 tag 保存重要版本。
+发布新内容前请遵守：
 
-GitHub 公开仓库默认不会自动授予别人复制、修改和再发布你作品的许可。未单独添加开源许可证的代码通常仍保留全部权利；如果未来希望开放代码，请为代码选择合适的开源许可证，但不要把文章、诗歌和个人记录自动包含进去。
+1. 使用 `木有风` 作为文章 `author` 和公开署名。
+2. 使用 `Logan.Song / 木有风` 作为版权字段中的双署名。
+3. 不删除原文版权声明、Git 历史、发布日期和原始链接。
+4. 允许分享原始链接和必要的短引用，但不允许未经许可转载全文、改编、翻译、批量抓取或商业使用。
+5. 对引用、图片、字体、数据和代码片段保留原作者、来源和许可证。
+6. 发现侵权时先保存截图、URL、时间和 Git 版本证据，再向平台提交版权投诉。
+7. 不把真实姓名、身份证件、住址、密码、token 或其他敏感信息放进公开仓库。
+
+GitHub 公开仓库默认不会自动授予别人复制、修改和再发布你作品的许可。当前项目没有为文章、诗歌散文、交易心得、个人记录和站点文案添加开源许可证；具体允许和禁止的使用方式以 [`COPYRIGHT.md`](./COPYRIGHT.md) 为准。
 
 ## 创建 GitHub Pages 仓库
 

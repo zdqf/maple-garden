@@ -4,8 +4,9 @@ description: "记录一个普通程序员在 2026 年从商业航天、存储芯
 slug: "a-share-tech-investing-drawdown-notes"
 publishedAt: "2026-10-22T21:00:00+08:00"
 category: "trader"
-author: "Logan.Song"
-copyright: "© 2026 Logan.Song. All rights reserved."
+collection: "a-share-tech-investing-drawdown-notes"
+author: "木有风"
+copyright: "© 2026 Logan.Song / 木有风. All rights reserved."
 tags:
   - "A股"
   - "科技股"
@@ -138,5 +139,7 @@ draft: false
 如果未来我还能重新走近科技股，我希望那时的自己不再只问“它会不会涨”，也会认真问一句：“如果它不涨，如果它继续跌，如果我错了，我是否仍然承担得起？”
 
 这大概是我在今年得到的、代价最昂贵的一课。
+
+最后我想说的是，失去的金钱或许日后还会再回来，但是那些对家人的扣搜，对生活的失态，对时间的虚度和精力的流逝都是一去不复返的，且行且珍惜，及时抽身，及时止损
 
 > 本文记录个人经历与情绪，不构成任何投资建议。市场有风险，投资需独立判断，并承担可能的本金损失。

@@ -20,7 +20,7 @@ export function HomePage(): React.JSX.Element {
         <p className="eyebrow">DEVELOPER GARDEN / LOCAL-FIRST</p>
         <h1 id="home-title">{personalConfig.site.title}</h1>
         <p className="hero-copy">{personalConfig.site.description}</p>
-        <p className="placeholder-line">当前身份与个人简介：<PlaceholderBadge /></p>
+        <p className="placeholder-line">个人简介：{personalConfig.biography.join(' ')}</p>
         <div className="button-row">
           <Link className="button button-primary" to="/projects">浏览项目</Link>
           <Link className="button button-ghost" to="/tools">打开本地工具</Link>
@@ -29,7 +29,7 @@ export function HomePage(): React.JSX.Element {
 
       <section aria-labelledby="now-title" className="now-strip">
         <div><p className="eyebrow">NOW</p><h2 id="now-title">正在搭建内容与工具的最小闭环</h2></div>
-        <p>个人信息、经历和成果保持集中配置；尚未提供的真实资料明确标为 <PlaceholderBadge />。</p>
+        <p>个人资料、作品和联系方式保持集中配置；公开署名为木有风，版权标识使用 Logan.Song / 木有风。</p>
       </section>
 
       <section aria-labelledby="featured-title" className="stack-md">

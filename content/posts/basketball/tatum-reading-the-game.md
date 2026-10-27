@@ -4,8 +4,8 @@ description: "从持球、无球和阅读防守三个角度，记录我眼中塔
 slug: "tatum-reading-the-game"
 publishedAt: "2026-10-22T09:00:00+08:00"
 category: "basketball"
-author: "Logan.Song"
-copyright: "© 2026 Logan.Song. All rights reserved."
+author: "木有风"
+copyright: "© 2026 Logan.Song / 木有风. All rights reserved."
 tags:
   - "Jayson Tatum"
   - "Boston Celtics"

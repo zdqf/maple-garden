@@ -4,8 +4,8 @@ description: "从 JSON、Base64 到 SHA-256，浏览器 API 足够支持一组�
 slug: "browser-tools-without-a-backend"
 publishedAt: "2025-02-06T10:30:00+08:00"
 category: "developer"
-author: "Logan.Song"
-copyright: "© 2025 Logan.Song. All rights reserved."
+author: "木有风"
+copyright: "© 2025 Logan.Song / 木有风. All rights reserved."
 tags:
   - "web platform"
   - "privacy"

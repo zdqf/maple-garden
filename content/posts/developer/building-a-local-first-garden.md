@@ -4,8 +4,8 @@ description: "用静态内容、浏览器本地工具和清晰边界搭建一个
 slug: "building-a-local-first-garden"
 publishedAt: "2025-01-18T09:00:00+08:00"
 category: "developer"
-author: "Logan.Song"
-copyright: "© 2025 Logan.Song. All rights reserved."
+author: "木有风"
+copyright: "© 2025 Logan.Song / 木有风. All rights reserved."
 tags:
   - "architecture"
   - "local-first"

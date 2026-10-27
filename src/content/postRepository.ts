@@ -12,6 +12,7 @@ export type PublishedPost = Readonly<{
   description: string;
   publishedAt: string;
   category: string;
+  collection?: string | undefined;
   author: string;
   copyright: string;
   tags: readonly string[];
@@ -28,13 +29,14 @@ const FrontmatterSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   publishedAt: z.string().datetime({ offset: true }),
   category: z.string().trim().min(1),
+  collection: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
   author: z.string().trim().min(1).default('TODO_REPLACE'),
   copyright: z.string().trim().min(1).default('All rights reserved.'),
   tags: z.array(z.string().trim().min(1)).min(1),
   draft: z.boolean().default(false),
 });
 
-const postSources = import.meta.glob<string>('../../content/posts/*.md', {
+const postSources = import.meta.glob<string>('../../content/posts/**/*.md', {
   eager: true,
   import: 'default',
   query: '?raw',
@@ -207,6 +209,12 @@ export const publishedPosts: readonly PublishedPost[] = Object.freeze(parsedPost
 
 export function findPublishedPost(slug: string): PublishedPost | undefined {
   return publishedPosts.find((post) => post.slug === slug);
+}
+
+export function getPostsInCollection(collectionId: string): readonly PublishedPost[] {
+  return Object.freeze(
+    publishedPosts.filter((post) => post.collection === collectionId),
+  );
 }
 
 export function getRecentPosts(limit = 3): readonly PublishedPost[] {

@@ -6,6 +6,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { CopyButton } from '../components/common/forms';
 import { usePageMeta } from '../components/common/PageMeta';
 import { getArticleCategoryName } from '../config/articleCategories';
+import { getContentCollection } from '../config/contentCollections';
 import { findPublishedPost, publishedPosts } from '../content/postRepository';
 import NotFoundPage from './NotFoundPage';
 
@@ -73,6 +74,14 @@ export function ArticlePage(): React.JSX.Element {
         <p className="eyebrow">
           {getArticleCategoryName(post.category)} / {post.readingTime} MIN READ
         </p>
+        {post.collection ? (
+          <Link
+            className="button button-ghost"
+            to={`/journal/collection/${post.collection}`}
+          >
+            返回{getContentCollection(post.collection)?.title ?? '作品目录'}
+          </Link>
+        ) : null}
         <h1 id="article-title">{post.title}</h1>
         <p className="lede">{post.description}</p>
         <div className="tag-list">
@@ -91,20 +100,30 @@ export function ArticlePage(): React.JSX.Element {
         </div>
       </header>
 
-      <div className="article-layout">
-        {post.headings.length > 0 ? (
+      <div
+        className={
+          post.category === 'poetry' ? 'poetry-layout' : 'article-layout'
+        }
+      >
+        {post.category !== 'poetry' && post.headings.length > 0 ? (
           <aside aria-label="文章目录" className="toc">
-            <strong>目录</strong>
-            <ol>
-              {post.headings.map((heading) => (
-                <li className={heading.level === 3 ? 'toc-child' : undefined} key={heading.id}>
-                  <a href={`?heading=${encodeURIComponent(heading.id)}`}>{heading.text}</a>
-                </li>
-              ))}
-            </ol>
+            <details open={post.collection === undefined}>
+              <summary>本文目录</summary>
+              <ol>
+                {post.headings.map((heading) => (
+                  <li className={heading.level === 3 ? 'toc-child' : undefined} key={heading.id}>
+                    <a href={`?heading=${encodeURIComponent(heading.id)}`}>{heading.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </details>
           </aside>
         ) : null}
-        <div className="markdown-body">
+        <div
+          className={
+            post.category === 'poetry' ? 'markdown-body poetry-body' : 'markdown-body'
+          }
+        >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{

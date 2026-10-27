@@ -10,8 +10,8 @@ export type ArticleCategory = Readonly<{
 export const articleCategories: readonly ArticleCategory[] = Object.freeze([
   {
     id: 'poetry',
-    name: '诗歌',
-    description: '记录诗句、感受与个人创作片段。',
+    name: '诗歌散文',
+    description: '收纳诗歌、散文与那些需要慢慢写下来的片段。',
   },
   {
     id: 'developer',
@@ -20,13 +20,13 @@ export const articleCategories: readonly ArticleCategory[] = Object.freeze([
   },
   {
     id: 'trader',
-    name: '交易员',
-    description: '交易观察、复盘方法与风险记录。',
+    name: '交易心得',
+    description: '记录市场观察、交易复盘和真实的盈亏感受。',
   },
   {
     id: 'calligraphy',
-    name: '书法',
-    description: '临帖、笔法和书写练习记录。',
+    name: '写点什么',
+    description: '不限定主题，写下此刻想写的字、句子和片段。',
   },
   {
     id: 'basketball',

@@ -19,18 +19,27 @@ describe('central configuration data', () => {
     expect(localizedSiteText).toBe(personalConfig.localizedText);
 
     expect(personalConfig.identity).toEqual({
-      name: 'Logan.Song',
-      headline: 'TODO_REPLACE',
+      name: '木有风',
+      headline: '一枚枫叶也是一座花园',
     });
-    expect(personalConfig.biography).toEqual(['TODO_REPLACE']);
-    expect(personalConfig.skills).toEqual(['TODO_REPLACE']);
-    expect(personalConfig.principles).toEqual(['TODO_REPLACE']);
+    expect(personalConfig.biography).toEqual([
+      '木有风，2003 年生于湖北赤壁。',
+      '曾获武汉大学樱花诗歌奖、第五届浙江大学“求是杯”诗歌创作奖、野草文学奖等。',
+    ]);
+    expect(personalConfig.skills).toEqual(['钢笔', '写字', '写诗', '篮球']);
+    expect(personalConfig.principles).toEqual([]);
     expect(personalConfig.experience).toEqual([]);
-    expect(personalConfig.contacts).toEqual([]);
+    expect(personalConfig.contacts).toEqual([
+      {
+        label: '邮箱',
+        href: 'mailto:fengye78236402@gmail.com',
+        accessibleLabel: '发送邮件至 fengye78236402@gmail.com',
+      },
+    ]);
     expect(personalConfig.socials).toEqual([]);
     expect(personalConfig.metrics).toEqual([]);
     expect(personalConfig).not.toHaveProperty('resumeUrl');
-    expect(containsPlaceholder(personalConfig)).toBe(true);
+    expect(containsPlaceholder(personalConfig)).toBe(false);
   });
 
   it('provides one schema-valid project catalog outside presentation code', () => {
