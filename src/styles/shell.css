@@ -1,0 +1,36 @@
+.site-shell{min-height:100dvh;overflow-x:clip}.shell-inner,.main-content{width:min(1120px,calc(100% - 80px));margin-inline:auto}
+.main-content{min-height:calc(100dvh - 220px);padding-block:62px 80px;outline:none}
+.site-header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.header-inner{display:flex;align-items:center;min-height:90px;gap:30px}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;white-space:nowrap;color:var(--text)}
+.brand>span:last-child{font-family:Georgia,serif;font-size:21px;font-weight:500;letter-spacing:-.5px}
+.brand small{display:block;color:var(--muted);font-family:var(--font-sans);font-size:10px;font-weight:400;letter-spacing:2px;margin-top:1px}
+.brand-mark{display:flex;color:var(--accent)}.primary-nav{margin-left:auto}
+.primary-nav ul,.site-footer ul{list-style:none;display:flex;gap:26px;padding:0;margin:0}
+.primary-nav a{position:relative;display:block;padding:33px 0;color:var(--muted);text-decoration:none;font-size:13px}
+.primary-nav a:hover,.primary-nav a[aria-current="page"]{color:var(--text)}
+.primary-nav a[aria-current="page"]::after{content:'';position:absolute;bottom:23px;left:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.header-actions{display:flex;align-items:center;gap:13px;margin-left:20px}
+.search-trigger{display:inline-flex;align-items:center;gap:9px;min-height:40px;border:0;background:none;color:var(--muted);font-size:12px}
+kbd{font-family:var(--font-mono);font-size:10px;font-weight:400;border:1px solid var(--line);border-radius:4px;padding:2px 5px;color:var(--muted)}
+.theme-control{border-left:1px solid var(--line);padding-left:12px}
+.theme-control select{width:79px;border:0;min-height:40px;padding:5px 0 5px 4px;background:transparent;font-size:11px;color:var(--muted)}
+.menu-toggle{display:none;background:none;border:1px solid var(--line);border-radius:4px;min-width:40px;min-height:40px}
+.skip-link{position:fixed;left:16px;top:-80px;z-index:100;padding:10px 16px;background:var(--accent);color:var(--accent-ink)}.skip-link:focus{top:12px}
+
+/* Native dialog manages search focus. */
+.search-dialog{position:fixed;inset:0;top:12vh;bottom:auto;width:min(640px,calc(100% - 32px));max-height:76dvh;overflow-y:auto;padding:27px;margin:0 auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);box-shadow:var(--shadow)}
+.search-dialog::backdrop{background:rgb(13 22 16 / 40%);backdrop-filter:blur(5px)}
+.search-dialog-top{display:flex;align-items:center;justify-content:space-between;gap:20px}.search-dialog-top h2{margin-top:6px;font-size:24px}
+.search-dialog-top .eyebrow{font-size:8px}.icon-button{display:inline-grid;place-items:center;width:36px;height:36px;border:1px solid var(--line);border-radius:4px;background:transparent;font-size:20px;color:var(--muted)}
+.search-input-wrap{display:block;margin-top:22px}.search-input-wrap input{background:var(--surface);padding:14px;font-size:13px}
+.search-hint{font-size:10px;color:var(--muted);margin-block:18px 6px}.search-results{display:grid}
+.search-results a{display:grid;grid-template-columns:1fr 20px;gap:4px 16px;text-decoration:none;padding:16px 10px;border-bottom:1px solid var(--line);border-radius:3px}
+.search-results a:hover{background:var(--surface-2)}.search-result-type{grid-column:1;color:var(--accent);font-size:9px}
+.search-results strong{grid-column:1;font-size:14px;font-weight:500}.search-results small{grid-column:1;color:var(--muted);font-size:11px}
+.search-result-arrow{grid-column:2;grid-row:2;color:var(--muted)}.search-empty{padding-block:30px;color:var(--muted)}
+.search-footer{display:flex;justify-content:space-between;gap:15px;margin-top:22px;color:var(--muted);font-size:9px}
+.site-footer{border-top:1px solid var(--line)}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;padding-block:35px}
+.footer-signature{display:flex;align-items:center;gap:12px}.footer-signature>svg{width:21px;color:var(--accent)}
+.footer-signature span{font:17px Georgia,serif}.footer-signature p{font-size:9px;color:var(--muted);margin-top:5px;letter-spacing:1px}
+.footer-right{display:grid;gap:11px;text-align:right;color:var(--muted);font-size:9px}.site-footer ul{justify-content:end;gap:18px;font-size:11px}.site-footer a{text-decoration:none}

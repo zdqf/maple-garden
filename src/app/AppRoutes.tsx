@@ -1,17 +1,20 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import ArticlePage from '../pages/ArticlePage';
 import CollectionPage from '../pages/CollectionPage';
 import AboutPage from '../pages/AboutPage';
 import HomePage from '../pages/HomePage';
 import JournalPage from '../pages/JournalPage';
-import LocalToolPage from '../pages/LocalToolPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ProjectsPage from '../pages/ProjectsPage';
 import ToolPortalPage from '../pages/ToolPortalPage';
 
 import { SiteShell } from '../components/shell/SiteShell';
 import { routePaths } from './routeConfig';
+
+// Keep Markdown rendering, syntax highlighting and tool editors off the home-page bundle.
+const ArticlePage = lazy(() => import('../pages/ArticlePage'));
+const LocalToolPage = lazy(() => import('../pages/LocalToolPage'));
 
 export function AppRoutes(): React.JSX.Element {
   return (

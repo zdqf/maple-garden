@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { assertPostOrganization } from './contentOrganization';
+
 export type PostHeading = Readonly<{
   id: string;
   text: string;
@@ -175,6 +177,7 @@ function parsePost(sourcePath: string, rawSource: string): PublishedPost | undef
   if (frontmatter.draft) {
     return undefined;
   }
+  assertPostOrganization(sourcePath, frontmatter);
   const body = parsed.content.trim();
   if (body.length === 0) {
     throw new Error(`Markdown post has empty body: ${sourcePath}`);

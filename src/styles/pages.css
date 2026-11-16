@@ -1,0 +1,37 @@
+/* Work and the person behind it. */
+.about-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:95px}.about-identity{padding-right:30px;border-right:1px solid var(--line)}
+.about-monogram{display:grid;place-items:center;width:120px;height:140px;font-family:var(--font-serif);font-size:64px;background:#e9ebdf;color:#5d6a52;margin-bottom:25px}
+.about-identity h2{margin-top:8px}.about-identity>p:not(.eyebrow){color:var(--muted);font-size:12px;margin-top:8px}.about-contacts{margin-top:25px;font-size:12px}
+.about-details p:not(.eyebrow){color:var(--muted);line-height:2}.about-details h2{font-size:24px}.about-garden-note{border-top:1px solid var(--line);padding-top:35px}
+.project-toolbar,.tool-portal-toolbar{display:flex;align-items:center;justify-content:space-between;gap:25px}
+.project-search,.tool-portal-toolbar label{width:min(460px,100%)}.project-search input,.tool-portal-toolbar input{font-size:12px}
+.project-filters{margin-top:16px;color:var(--muted)}.project-filters summary{cursor:pointer;font-size:11px}
+.filter-panel{display:flex;flex-wrap:wrap;align-items:end;gap:15px;margin-top:18px;padding:20px;border:1px solid var(--line);background:var(--surface);border-radius:4px}
+.filter-panel label,.inline-controls label,[data-field="true"]{display:grid;gap:7px;color:var(--muted);font-size:12px}.filter-panel label{flex:1 1 150px}
+.project-entry{display:grid;grid-template-columns:.9fr 1.2fr;gap:45px;border-top:1px solid var(--line);padding-top:35px}
+.project-entry-art{display:flex;flex-direction:column;justify-content:space-between;min-height:260px;padding:27px;background:var(--surface-2);border:1px solid var(--line);background-image:radial-gradient(var(--line) .75px,transparent .75px);background-size:12px 12px}
+.project-entry-art>span{color:var(--muted);font:9px var(--font-mono);letter-spacing:1px}
+.project-entry-art strong{font-family:Georgia,serif;font-size:40px;color:var(--accent);font-weight:400}
+.project-entry-copy{display:grid;align-content:start;gap:20px;padding-block:7px}
+.project-entry-copy h2{font-family:Georgia,serif;font-size:32px;font-weight:400}.project-entry-copy>p{color:var(--muted);font-size:13px}
+.project-entry-copy .button-row{margin-top:8px;font-size:12px;gap:25px}.project-status{color:var(--muted);font-size:10px;white-space:nowrap}.project-status>span{color:#87987a;font-size:7px}
+.tool-group-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.tool-group-heading h2{font-size:22px}.tool-group-heading .eyebrow{font-size:8px;color:var(--muted)}
+.tool-card{display:flex;flex-direction:column;gap:12px;padding:24px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--text);text-decoration:none;transition:border-color .2s,background .2s}
+.tool-card:hover{border-color:var(--accent);background:var(--bg)}.tool-symbol{font:21px var(--font-mono);color:var(--accent);padding-bottom:7px}
+.tool-card p{font-size:11px;color:var(--muted);line-height:1.9}.tool-card-arrow{color:var(--muted)}
+.tool-privacy-note{display:flex;align-items:center;gap:12px;padding-top:25px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+.tool-privacy-note>span{color:var(--accent);font-size:22px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.tool-tabs{display:flex;flex-wrap:wrap;gap:10px}
+.error-message{color:var(--danger)}.article-list{display:grid;gap:15px}.plain-list{display:grid;gap:10px;padding-left:20px;color:var(--muted)}
+.profile-card{border:1px solid var(--line);padding:25px;border-radius:4px}
+
+/* Local tool inputs and results. */
+[data-field="true"] textarea{font-family:var(--font-mono);font-size:12px;line-height:1.9}
+[data-result-panel="true"]{border:1px solid var(--line);border-radius:5px;background:var(--surface);overflow:hidden}
+[data-result-panel="true"]>div:first-child{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:15px 20px;border-bottom:1px solid var(--line);font-size:12px}
+[data-result-content="true"]{padding:22px;min-height:120px}
+[data-result-content="true"]>pre{margin:0;font:12px/1.9 var(--font-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+[data-copy-control="true"]{display:inline-flex;align-items:center;gap:8px;font-size:10px}
+[data-copy-control="true"]>button{background:transparent;border:1px solid var(--line);border-radius:3px;padding:5px 10px;color:var(--muted)}
+.code-label [data-copy-control="true"]>button{border-color:#485044;color:#d4dfd0}

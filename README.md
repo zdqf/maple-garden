@@ -34,7 +34,9 @@ npm run build
 - `calligraphy`：写点什么
 - `basketball`：篮球
 
-日志页会自动显示板块卡片、文章数量和分类筛选。新增板块时修改配置文件即可，不需要修改 Journal 页面布局。
+日志页以主题目录、文集目录和按年份排列的文章列表组织内容。首屏只呈现必要信息，标签按需展开；手机上可折叠目录。新增板块时修改配置文件即可，不需要修改 Journal 页面布局。
+
+归档支持正文搜索、主题、文集、标签、年份和排序，筛选会写入 HashRouter 的查询参数，复制地址即可分享当前结果。例如 `#/journal?category=poetry&collection=zhu-zhang&year=2026`。原来的 `#/journal/category/poetry`、`#/journal/tag/现代诗` 和文章链接继续有效。
 
 ## 个人配置
 
@@ -44,7 +46,23 @@ npm run build
 
 ## 添加文章
 
-文章按分类放在 `content/posts/` 下，诗集或系列内容再使用独立子目录。例如 `content/posts/poetry/shen-zai-han/` 存放《身在汉》的诗作，`content/posts/trader/` 存放交易记录。构建会递归读取这些目录中的 Markdown 文件。
+完整归档规范、目录示例与发布前检查见 [内容归档约定](content/README.md)。
+
+内容采用「主题 → 文集（可选）→ 文章」三级结构，年份和标签由元数据生成，避免在文件目录中重复归类。文章按主题放在 `content/posts/` 下，同一诗集或系列使用独立子目录。构建会递归读取 Markdown，文件位置与文章 URL 解耦，URL 始终由 `slug` 决定。
+
+```text
+content/posts/
+├── developer/                    # 独立技术文章
+├── poetry/
+│   ├── shen-zai-han/              # 《身在汉》
+│   └── zhu-zhang/                 # 《竹杖》
+├── trader/
+│   ├── a-share-tech-investing-drawdown-notes/
+│   └── value-investing/
+└── basketball/                   # 篮球观察
+```
+
+新增文集先在 `src/config/contentCollections.ts` 配置名称、简介与所属主题，再在文章 frontmatter 中填写 `collection: "文集ID"`。独立文章省略 `collection`。主题回答「写什么」，文集回答「属于哪组作品」，标签用于交叉检索；不要为了年份或标签移动文章，也不要用同一文集拆出重复分类。
 
 Frontmatter 示例：
 

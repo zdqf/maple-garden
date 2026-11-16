@@ -36,12 +36,12 @@ export const primaryNavigation: readonly PrimaryNavigationItem[] =
       end: true,
     },
     {
-      label: getNavigationLabel('navigation.projects'),
-      to: routePaths.projects,
-    },
-    {
       label: getNavigationLabel('navigation.journal'),
       to: routePaths.journal,
+    },
+    {
+      label: getNavigationLabel('navigation.projects'),
+      to: routePaths.projects,
     },
     {
       label: getNavigationLabel('navigation.tools'),

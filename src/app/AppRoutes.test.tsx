@@ -16,7 +16,7 @@ function renderRoute(path: string): void {
 
 describe('AppRoutes', () => {
   it.each([
-    ['/', 'Maple-Garden'],
+    ['/', '一枚枫叶'],
     ['/projects', '项目'],
     ['/journal', '日志'],
     ['/journal/tag/TypeScript', '日志'],
@@ -28,7 +28,7 @@ describe('AppRoutes', () => {
     renderRoute(path);
 
     expect(
-      await screen.findByRole('heading', { level: 1, name: heading }),
+      await screen.findByRole('heading', { level: 1, name: path === '/' ? /一枚枫叶/ : heading }, { timeout: 5000 }),
     ).toBeInTheDocument();
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getAllByRole('main')).toHaveLength(1);
@@ -65,7 +65,7 @@ describe('AppRoutes', () => {
   it('places the skip link first and moves focus to the single main landmark', async () => {
     const user = userEvent.setup();
     renderRoute('/');
-    await screen.findByRole('heading', { name: 'Maple-Garden' });
+    await screen.findByRole('heading', { name: /一枚枫叶/ });
 
     const skipLink = screen.getByRole('link', { name: '跳到主要内容' });
     const firstFocusable = document.querySelector<HTMLElement>(

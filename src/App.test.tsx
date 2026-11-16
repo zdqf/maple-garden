@@ -12,7 +12,7 @@ describe('App', () => {
     expect(
       await screen.findByRole('heading', {
         level: 1,
-        name: 'Maple-Garden',
+        name: /一枚枫叶/,
       }),
     ).toBeInTheDocument();
 

@@ -1,201 +1,142 @@
-import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
+import { ArchivePostRow } from '../components/common/ArchivePostRow';
 import { EmptyState } from '../components/common/forms';
 import { usePageMeta } from '../components/common/PageMeta';
-import {
-  articleCategories,
-  getArticleCategoryName,
-} from '../config/articleCategories';
-import { contentCollections } from '../config/contentCollections';
-import {
-  getPostCategories,
-  getPostTags,
-  publishedPosts,
-} from '../content/postRepository';
+import { SearchInput } from '../components/common/SearchInput';
+import { articleCategories, getArticleCategoryName } from '../config/articleCategories';
+import { contentCollections, getContentCollection } from '../config/contentCollections';
+import { getPostTags, publishedPosts, type PublishedPost } from '../content/postRepository';
+
+type ArchiveFilters = Readonly<{
+  q: string; category: string; collection: string; tag: string; year: string; sort: string;
+}>;
+
+function archiveHref(filters: ArchiveFilters): string {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value && !(key === 'sort' && value === 'newest')) params.set(key, value);
+  });
+  return params.size ? `/journal?${params.toString()}` : '/journal';
+}
+
+function postYear(post: PublishedPost): string { return post.publishedAt.slice(0, 4); }
 
 export function JournalPage(): React.JSX.Element {
-  const { category, tag } = useParams<{ category?: string; tag?: string }>();
-  usePageMeta('日志 · Maple-Garden', '浏览 Maple-Garden 的分类文章和个人记录。');
+  const route = useParams<{ category?: string; tag?: string }>();
+  const location = useLocation();
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const [directoryOpen, setDirectoryOpen] = useState(false);
+  usePageMeta('日志 · Maple-Garden', '按主题、文集和年份，浏览木有风的文章与长期记录。');
 
-  const decodedTag = tag === undefined ? undefined : decodeURIComponent(tag);
-  const decodedCategory =
-    category === undefined ? undefined : decodeURIComponent(category);
-  const posts = publishedPosts.filter(
-    (post) =>
-      (!decodedTag || post.tags.includes(decodedTag)) &&
-      (!decodedCategory || post.category === decodedCategory),
-  );
-  const filterLabel =
-    decodedTag === undefined && decodedCategory === undefined
-      ? ''
-      : ` · ${decodedTag ?? getArticleCategoryName(decodedCategory ?? '')}`;
-  const categoryCounts = new Map<string, number>();
-  for (const post of publishedPosts) {
-    categoryCounts.set(post.category, (categoryCounts.get(post.category) ?? 0) + 1);
-  }
-
-  const collectionEntries = contentCollections
-    .filter((collection) => {
-      if (decodedCategory !== undefined && collection.category !== decodedCategory) {
-        return false;
-      }
-      return posts.some((post) => post.collection === collection.id);
-    })
-    .map((collection) => ({
-      collection,
-      posts: posts.filter((post) => post.collection === collection.id),
-    }));
-  const standalonePosts = posts.filter((post) => post.collection === undefined);
+  // React Router already decodes route params; old category/tag links stay valid.
+  const filters: ArchiveFilters = {
+    q: params.get('q') ?? '',
+    category: params.get('category') ?? route.category ?? '',
+    collection: params.get('collection') ?? '',
+    tag: params.get('tag') ?? route.tag ?? '',
+    year: params.get('year') ?? '',
+    sort: params.get('sort') ?? 'newest',
+  };
+  const update = (patch: Partial<ArchiveFilters>, replace = false): void => {
+    const href = archiveHref({ ...filters, ...patch });
+    // Keep legacy route paths while typing so the shared route boundary retains focus.
+    const destination = replace
+      ? `${location.pathname}${href.slice('/journal'.length)}`
+      : href;
+    void navigate(destination, { replace, preventScrollReset: true });
+  };
+  const query = filters.q.trim().toLocaleLowerCase();
+  const posts = publishedPosts.filter((post) => {
+    const collection = post.collection ? getContentCollection(post.collection) : undefined;
+    const searchable = [post.title, post.description, post.body, ...post.tags,
+      getArticleCategoryName(post.category), collection?.title ?? ''].join(' ').toLocaleLowerCase();
+    return (!filters.category || post.category === filters.category)
+      && (!filters.collection || post.collection === filters.collection)
+      && (!filters.tag || post.tags.includes(filters.tag))
+      && (!filters.year || postYear(post) === filters.year)
+      && (!query || searchable.includes(query));
+  }).sort((left, right) => {
+    if (filters.sort === 'oldest') return left.publishedAt.localeCompare(right.publishedAt);
+    if (filters.sort === 'title') return left.title.localeCompare(right.title, 'zh-CN');
+    return right.publishedAt.localeCompare(left.publishedAt);
+  });
+  const years = [...new Set(publishedPosts.map(postYear))].sort().reverse();
+  const groups = new Map<string, PublishedPost[]>();
+  posts.forEach((post) => {
+    const year = postYear(post);
+    const group = groups.get(year) ?? [];
+    group.push(post);
+    groups.set(year, group);
+  });
+  const isFiltered = Boolean(filters.q || filters.category || filters.collection || filters.tag || filters.year);
+  const selectedCollection = getContentCollection(filters.collection);
+  const chips = [
+    filters.category ? { key: 'category', label: getArticleCategoryName(filters.category) } : null,
+    filters.collection ? { key: 'collection', label: selectedCollection?.title ?? filters.collection } : null,
+    filters.tag ? { key: 'tag', label: `# ${filters.tag}` } : null,
+    filters.year ? { key: 'year', label: filters.year } : null,
+  ].filter((chip) => chip !== null);
 
   return (
-    <section aria-labelledby="journal-title" className="stack-lg">
-      <div className="page-heading">
+    <section aria-labelledby="journal-title" className="archive-page">
+      <div className="page-heading archive-heading">
         <div>
-          <p className="eyebrow">JOURNAL / MAPLE-GRADEN</p>
+          <p className="eyebrow">THE ARCHIVE / 文字的来处</p>
           <h1 id="journal-title">日志</h1>
-          <p className="filter-context">
-            {filterLabel
-              ? `当前筛选：${filterLabel.replace(' · ', '')}`
-              : '先进入栏目，再浏览其中的内容目录。'}
-          </p>
-          <p className="lede">
-            每个栏目可以包含书籍、系列或独立文章，进入目录后再快速定位具体内容。
-          </p>
+          <p className="lede">写代码，也写生活。让散落的思考，慢慢长成一座花园。</p>
         </div>
-        <Link className="button button-ghost" to="/journal">
-          清除筛选
-        </Link>
+        <p className="archive-total"><strong>{publishedPosts.length.toString().padStart(2, '0')}</strong><span>篇记录 · 持续生长</span></p>
       </div>
-
-      <section aria-labelledby="category-board-title" className="stack-md">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">CONTENT AREAS</p>
-            <h2 id="category-board-title">内容栏目</h2>
-          </div>
-          <span className="result-count">{articleCategories.length} 个栏目</span>
-        </div>
-        <div className="category-grid">
-          {articleCategories.map((item) => (
-            <Link
-              className={
-                item.id === decodedCategory
-                  ? 'category-card active'
-                  : 'category-card'
-              }
-              key={item.id}
-              to={`/journal/category/${item.id}`}
-            >
-              <span className="tag">{item.name}</span>
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <strong>{categoryCounts.get(item.id) ?? 0} 篇内容</strong>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <div className="filter-links">
-        <span>分类：</span>
-        {getPostCategories().map((item) => (
-          <Link
-            className={item === decodedCategory ? 'active' : ''}
-            key={item}
-            to={`/journal/category/${encodeURIComponent(item)}`}
-          >
-            {getArticleCategoryName(item)}
-          </Link>
-        ))}
-        <span>标签：</span>
-        {getPostTags().map((item) => (
-          <Link
-            className={item === decodedTag ? 'active' : ''}
-            key={item}
-            to={`/journal/tag/${encodeURIComponent(item)}`}
-          >
-            {item}
-          </Link>
-        ))}
-      </div>
-
-      {collectionEntries.length > 0 ? (
-        <section aria-labelledby="collection-list-title" className="stack-md">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">CONTENT INDEX</p>
-              <h2 id="collection-list-title">内容目录</h2>
-            </div>
-            <span className="result-count">{collectionEntries.length} 个内容集</span>
-          </div>
-          <div className="card-grid">
-            {collectionEntries.map(({ collection, posts: collectionPosts }) => (
-              <Link
-                className="content-card card-link"
-                key={collection.id}
-                to={`/journal/collection/${collection.id}`}
-              >
-                <div className="card-topline">
-                  <span className="tag">
-                    {getArticleCategoryName(collection.category)}
-                  </span>
-                  <span>{collectionPosts.length} 篇内容</span>
-                </div>
-                <h3>{collection.title}</h3>
-                <p>{collection.description}</p>
-                <small>进入内容目录 →</small>
+      <div className="archive-layout">
+        <aside className={`archive-sidebar${directoryOpen ? ' is-open' : ''}`}>
+          <button aria-controls="archive-directory" aria-expanded={directoryOpen} className="archive-directory-toggle" onClick={() => setDirectoryOpen((open) => !open)} type="button">
+            浏览主题与文集 <span aria-hidden="true">{directoryOpen ? '−' : '+'}</span>
+          </button>
+          <div className="archive-sidebar-content" id="archive-directory">
+            <nav aria-label="文章主题" className="archive-nav">
+              <p className="archive-nav-heading">主题 <span>TOPICS</span></p>
+              <Link aria-current={!filters.category && !filters.collection ? 'page' : undefined} className={`archive-nav-link${!filters.category && !filters.collection ? ' is-active' : ''}`} to={archiveHref({ ...filters, category: '', collection: '' })}>
+                <span>全部记录</span><span>{publishedPosts.length.toString().padStart(2, '0')}</span>
               </Link>
-            ))}
+              {articleCategories.map((category) => {
+                const count = publishedPosts.filter((post) => post.category === category.id).length;
+                return <Link aria-current={filters.category === category.id ? 'page' : undefined} className={`archive-nav-link${filters.category === category.id ? ' is-active' : ''}`} key={category.id} to={archiveHref({ ...filters, category: category.id, collection: '' })}>
+                  <span>{category.name}</span><span>{count.toString().padStart(2, '0')}</span>
+                </Link>;
+              })}
+            </nav>
+            <nav aria-label="文集筛选" className="archive-nav">
+              <p className="archive-nav-heading">文集 <span>COLLECTIONS</span></p>
+              {contentCollections.map((collection) => <Link aria-current={filters.collection === collection.id ? 'page' : undefined} className={`archive-nav-link${filters.collection === collection.id ? ' is-active' : ''}`} key={collection.id} to={archiveHref({ ...filters, category: collection.category, collection: collection.id })}>
+                <span>{collection.title}</span><span>{publishedPosts.filter((post) => post.collection === collection.id).length.toString().padStart(2, '0')}</span>
+              </Link>)}
+            </nav>
+            <details className="archive-tags">
+              <summary>按标签探索 <span aria-hidden="true">＋</span></summary>
+              <div className="archive-tag-list">{getPostTags().map((tag) => <Link aria-current={filters.tag === tag ? 'page' : undefined} className={filters.tag === tag ? 'is-active' : ''} key={tag} to={archiveHref({ ...filters, tag: filters.tag === tag ? '' : tag })}>{tag}</Link>)}</div>
+            </details>
+            <p className="archive-sidebar-note">主题收纳方向，文集连接篇章。<br />每一篇，都有自己的位置。</p>
           </div>
-        </section>
-      ) : null}
-
-      {standalonePosts.length > 0 ? (
-        <section aria-labelledby="standalone-list-title" className="stack-md">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">STANDALONE NOTES</p>
-              <h2 id="standalone-list-title">独立文章</h2>
-            </div>
-            <span className="result-count">{standalonePosts.length} 篇文章</span>
+        </aside>
+        <div className="archive-main">
+          <div aria-label="文章筛选" className="archive-toolbar">
+            <label className="archive-search"><span className="sr-only">搜索文章</span><span aria-hidden="true">⌕</span><SearchInput onValueChange={(value) => update({ q: value }, true)} placeholder="搜索标题、正文或关键词…" type="search" value={filters.q} /></label>
+            <label><span className="sr-only">文章年份</span><select aria-label="文章年份" onChange={(event) => update({ year: event.target.value })} value={filters.year}><option value="">全部年份</option>{years.map((year) => <option key={year} value={year}>{year}</option>)}</select></label>
+            <label><span className="sr-only">文章排序</span><select aria-label="文章排序" onChange={(event) => update({ sort: event.target.value })} value={filters.sort}><option value="newest">最新在前</option><option value="oldest">最早在前</option><option value="title">按标题</option></select></label>
           </div>
-          <div className="article-list">
-            {standalonePosts.map((post) => (
-              <article className="content-card" key={post.slug}>
-                <div className="card-topline">
-                  <span className="tag">{getArticleCategoryName(post.category)}</span>
-                  <time dateTime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString('zh-CN')}
-                  </time>
-                </div>
-                <h2>
-                  <Link to={`/journal/post/${post.slug}`}>{post.title}</Link>
-                </h2>
-                <p>{post.description}</p>
-                <div className="tag-list">
-                  {post.tags.map((item) => (
-                    <Link
-                      className="tag"
-                      key={item}
-                      to={`/journal/tag/${encodeURIComponent(item)}`}
-                    >
-                      {item}
-                    </Link>
-                  ))}
-                  <span>{post.readingTime} min read</span>
-                </div>
-              </article>
-            ))}
+          <div className="archive-results-heading">
+            <p aria-live="polite" className="result-count">{isFiltered ? `找到 ${posts.length} 篇记录` : '全部记录'}</p>
+            {isFiltered ? <Link className="archive-clear" to="/journal">清除筛选 ↗</Link> : <span className="archive-order-note">{filters.sort === 'oldest' ? '从最初开始' : filters.sort === 'title' ? '以标题为序' : '最近的，排在前面'}</span>}
           </div>
-        </section>
-      ) : null}
-
-      {collectionEntries.length === 0 && standalonePosts.length === 0 ? (
-        <EmptyState
-          action={<Link to="/journal">查看全部内容</Link>}
-          description="换一个栏目或返回全部内容。"
-          title="没有匹配内容"
-        />
-      ) : null}
+          {chips.length ? <div aria-label="当前筛选" className="archive-filter-chips">{chips.map((chip) => <button aria-label={`移除${chip.label}筛选`} key={chip.key} onClick={() => update({ [chip.key]: '' })} type="button">{chip.label}<span aria-hidden="true"> ×</span></button>)}</div> : null}
+          {selectedCollection ? <div className="archive-collection-note"><p>{selectedCollection.description}</p><Link to={`/journal/collection/${selectedCollection.id}`}>打开文集目录 ↗</Link></div> : null}
+          {posts.length === 0 ? <EmptyState action={<Link to="/journal">查看全部记录</Link>} description="试试其他关键词，或清除筛选重新寻找。" title="暂时没有找到这篇文字" /> : filters.sort === 'title' ? <div className="archive-post-list">{posts.map((post) => <ArchivePostRow key={post.slug} post={post} />)}</div> : <div className="archive-year-list">{[...groups].map(([year, yearPosts]) => <section aria-labelledby={`archive-year-${year}`} className="archive-year-group" key={year}><div className="archive-year-heading"><h2 id={`archive-year-${year}`}>{year}</h2><span>{yearPosts.length} 篇</span><span className="archive-year-rule" /></div>{yearPosts.map((post) => <ArchivePostRow key={post.slug} post={post} />)}</section>)}</div>}
+          <p className="archive-endnote">{posts.length ? '— 文字到这里，生活还在继续。' : '每一种寻找，都有它的回声。'}</p>
+        </div>
+      </div>
     </section>
   );
 }
